@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Must Run as Root
 
-if [ "$EUID" -ne 0 ]
-  then echo "Please run as root"
-  exit
-fi
+# if [ "$EUID" -ne 0 ]
+#   then echo "Please run as root"
+#   exit
+# fi
 
 
 # Installer Script for new systems
@@ -29,22 +29,40 @@ case ${answer:0:1} in
     ;;
 esac
 
-if [[$machine == "Linux"]]; then
+if [[ $machine == "Linux" ]]
+then
     p_man="apt"
-elif [[$machine == "Mac"]]; then
-    # curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
-    # p_man="brew"
-else 
+elif [[ $machine == "Mac" ]]
+then
+    # curl -fsSLO https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+    # source install.sh
+    # rm install.sh # this doesnt work
+    sh -c "$(curl -fsSLO https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    echo '# Set PATH, MANPATH, etc., for Homebrew.' >> /Users/phil/.zprofile
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/phil/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+    p_man="brew"
+else
     echo "haven't written anything not linux or mac yet"
     exit
 fi
 
+
 $p_man install zsh
 chsh -s /bin/zsh
-sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 source ~/.zshrc
 $p_man install vim
 mkdir ~/.vim
 cp vim/vimrc ~/.vim/vimrc
 mkdir ~/.vim/colors
 cp vim/monokai.vim ~/.vim/colors/monokai.vim
+cd ~
+echo "Successful Setup"
+
+
+'''
+Other installs on a new computer
+spotify
+
+'''
