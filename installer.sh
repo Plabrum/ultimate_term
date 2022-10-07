@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
 # Must Run as Root
 
-# if [ "$EUID" -ne 0 ]
-#   then echo "Please run as root"
-#   exit
-# fi
+
 
 
 # Installer Script for new systems
@@ -31,6 +28,10 @@ esac
 
 if [[ $machine == "Linux" ]]
 then
+    if [ "$EUID" -ne 0 ]
+      then echo "Please run as root"
+      exit
+    fi
     p_man="apt"
 elif [[ $machine == "Mac" ]]
 then
